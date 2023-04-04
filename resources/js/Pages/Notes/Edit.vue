@@ -12,6 +12,13 @@ const form = useForm({
 const submit = () => {
     form.put(route('notes.update',props.note.id), form);
 };
+
+const destroy = () => {
+    if(confirm('Do you want to delete this record?')) {
+        console.log("Test condition", route('notes.destroy',props.note.id));
+        form.delete(route('notes.destroy', props.note.id));
+    }
+};
 </script>
 
 <template>
@@ -53,6 +60,10 @@ const submit = () => {
                                     class="font-bold py-2 px-4 rounded-md bg-blue-500"
                                 >Edit</button>
                                 <Link :href="route('notes.index')">Return</Link>
+
+                                <hr class="my-6" />
+
+                                <a href="#" @click.prevent="destroy">Delete note</a>
                             </form>
                         </div>
                     </div>
