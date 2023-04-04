@@ -1,10 +1,18 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {Link} from "@inertiajs/vue3";
+import { Head, Link } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3'
+import { ref, watch } from "vue";
 
-defineProps({
-    notes: Array
-})
+defineProps({notes: Array});
+
+const valor = ref(null);
+
+const search = () => {
+    let q= valor.value;
+    console.log('Search for: ', q);
+    router.get(route('notes.index', {q}), {}, {preserveState: true});
+};
 </script>
 
 <template>
@@ -25,10 +33,18 @@ defineProps({
                         </div>
                     </div>
                     <div class="md:col-span-2 mt-5 md:mt-0">
-                        <div class="shadow bg-white md:rounded-md p-4">
-                            <Link :href="route('notes.create')" class="bg-blue-500  font-bold px-4 py-2 rounded">
-                                Create
-                            </Link>
+                        <div class="shadow bg-white md:rounded p-4">
+                            <div class="flex justify-between">
+                                <input type="text"
+                                    class="form-input rounded-md shadow-sm"
+                                    placeholder="search..."
+                                    v-model="valor" @keyup="search">
+                                <Link :href="route('notes.create')"
+                                    class="bg-blue-500  font-bold px-4 py-2 rounded">
+                                    Create
+                                </Link>
+                            </div>
+                            <hr class="my-6" />
                             <table>
                                 <tr v-for="note in notes">
                                     <td class="border px-4 py-2">
